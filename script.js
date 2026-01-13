@@ -114,10 +114,26 @@ function nextScene() {
             nextScene();
         };
         
-        gameVideo.play().catch(e => {
-            console.log('Автовоспроизведение заблокировано:', e);
-            // Если автовоспроизведение заблокировано, пользователь должен нажать play вручную
-        });
+        // Попытка воспроизведения со звуком
+        const playPromise = gameVideo.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(e => {
+                console.log('Автовоспроизведение заблокировано:', e);
+                // Если автовоспроизведение заблокировано, попробуем с muted для мобильных
+                gameVideo.muted = true;
+                gameVideo.play().then(() => {
+                    // После первого взаимодействия включим звук
+                    document.addEventListener('click', () => {
+                        gameVideo.muted = false;
+                    }, { once: true });
+                    document.addEventListener('touchstart', () => {
+                        gameVideo.muted = false;
+                    }, { once: true });
+                }).catch(err => {
+                    console.log('Не удалось воспроизвести видео:', err);
+                });
+            });
+        }
         showControlsHint();
     } else if (scene.type === 'choice') {
         showScreen('choice');
@@ -152,7 +168,26 @@ function handleChoice(choice) {
         nextScene();
     };
     
-    gameVideo.play().catch(e => console.log('Автовоспроизведение заблокировано'));
+    // Попытка воспроизведения со звуком
+    const playPromise = gameVideo.play();
+    if (playPromise !== undefined) {
+        playPromise.catch(e => {
+            console.log('Автовоспроизведение заблокировано:', e);
+            // Если автовоспроизведение заблокировано, попробуем с muted для мобильных
+            gameVideo.muted = true;
+            gameVideo.play().then(() => {
+                // После первого взаимодействия включим звук
+                document.addEventListener('click', () => {
+                    gameVideo.muted = false;
+                }, { once: true });
+                document.addEventListener('touchstart', () => {
+                    gameVideo.muted = false;
+                }, { once: true });
+            }).catch(err => {
+                console.log('Не удалось воспроизвести видео:', err);
+            });
+        });
+    }
     showControlsHint();
 }
 
