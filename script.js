@@ -114,32 +114,23 @@ function nextScene() {
             nextScene();
         };
         
-        // Попытка воспроизведения со звуком
-        const playPromise = gameVideo.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(e => {
-                console.log('Автовоспроизведение заблокировано:', e);
-                // Если автовоспроизведение заблокировано, попробуем с muted для мобильных
-                gameVideo.muted = true;
-                gameVideo.play().then(() => {
-                    // После первого взаимодействия включим звук
-                    document.addEventListener('click', () => {
-                        gameVideo.muted = false;
-                    }, { once: true });
-                    document.addEventListener('touchstart', () => {
-                        gameVideo.muted = false;
-                    }, { once: true });
-                }).catch(err => {
-                    console.log('Не удалось воспроизвести видео:', err);
-                });
-            });
-        }
+        // Воспроизведение со звуком
+        gameVideo.muted = false; // Убеждаемся, что звук включен
+        gameVideo.play().catch(e => {
+            console.log('Автовоспроизведение заблокировано:', e);
+            // Если автовоспроизведение заблокировано, пользователь может нажать play вручную
+        });
         showControlsHint();
     } else if (scene.type === 'choice') {
         showScreen('choice');
         choiceVideo.src = scene.src;
         choiceVideo.load();
-        choiceVideo.play().catch(e => console.log('Автовоспроизведение заблокировано'));
+        // Воспроизведение со звуком
+        choiceVideo.muted = false; // Убеждаемся, что звук включен
+        choiceVideo.play().catch(e => {
+            console.log('Автовоспроизведение заблокировано:', e);
+            // Если автовоспроизведение заблокировано, пользователь может нажать play вручную
+        });
         showControlsHint();
     }
 }
@@ -168,26 +159,12 @@ function handleChoice(choice) {
         nextScene();
     };
     
-    // Попытка воспроизведения со звуком
-    const playPromise = gameVideo.play();
-    if (playPromise !== undefined) {
-        playPromise.catch(e => {
-            console.log('Автовоспроизведение заблокировано:', e);
-            // Если автовоспроизведение заблокировано, попробуем с muted для мобильных
-            gameVideo.muted = true;
-            gameVideo.play().then(() => {
-                // После первого взаимодействия включим звук
-                document.addEventListener('click', () => {
-                    gameVideo.muted = false;
-                }, { once: true });
-                document.addEventListener('touchstart', () => {
-                    gameVideo.muted = false;
-                }, { once: true });
-            }).catch(err => {
-                console.log('Не удалось воспроизвести видео:', err);
-            });
-        });
-    }
+    // Воспроизведение со звуком
+    gameVideo.muted = false; // Убеждаемся, что звук включен
+    gameVideo.play().catch(e => {
+        console.log('Автовоспроизведение заблокировано:', e);
+        // Если автовоспроизведение заблокировано, пользователь может нажать play вручную
+    });
     showControlsHint();
 }
 
