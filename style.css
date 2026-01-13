@@ -63,6 +63,12 @@ video {
     touch-action: manipulation;
 }
 
+/* Видео на экране выбора не должно блокировать кнопки */
+#choice-screen video {
+    pointer-events: none;
+    z-index: 1;
+}
+
 /* Подсказка об управлении */
 .controls-hint {
     position: absolute;
@@ -103,7 +109,8 @@ video {
     gap: 15px;
     justify-content: center;
     max-width: 90%;
-    z-index: 50;
+    z-index: 1000;
+    pointer-events: auto;
 }
 
 .choice-btn {
@@ -118,6 +125,11 @@ video {
     transition: all 0.3s ease;
     min-width: 150px;
     backdrop-filter: blur(10px);
+    pointer-events: auto;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.5);
+    position: relative;
+    z-index: 1001;
 }
 
 .choice-btn:hover {

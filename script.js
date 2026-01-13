@@ -226,6 +226,10 @@ document.querySelectorAll('.choice-btn').forEach(btn => {
     });
     
     // Обработка touch событий (для мобильных устройств)
+    btn.addEventListener('touchstart', (e) => {
+        e.stopPropagation();
+    }, { passive: true });
+    
     btn.addEventListener('touchend', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -233,6 +237,11 @@ document.querySelectorAll('.choice-btn').forEach(btn => {
         if (choice) {
             handleChoice(choice);
         }
+    });
+    
+    // Дополнительная обработка для надежности на мобильных
+    btn.addEventListener('touchcancel', (e) => {
+        e.stopPropagation();
     });
 });
 
@@ -307,6 +316,12 @@ document.addEventListener('click', (e) => {
 });
 
 exitButton.addEventListener('click', handleExit);
+// Поддержка touch для кнопки выхода на мобильных
+exitButton.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleExit();
+});
 
 // Предзагрузка медиа
 function preloadMedia() {
