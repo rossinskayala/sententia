@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sententia</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Обложка -->
+        <div id="cover-screen" class="screen active">
+            <img id="cover-image" src="cover.jpg" alt="Sententia Cover">
+            <div class="controls-hint">
+                <div class="hint-text">Клик или Пробел - продолжить | ESC - выйти</div>
+            </div>
+        </div>
+
+        <!-- Видео экраны -->
+        <div id="video-screen" class="screen">
+            <video id="game-video" preload="auto" playsinline>
+                Ваш браузер не поддерживает видео.
+            </video>
+            <div class="controls-hint">
+                <div class="hint-text">Клик или Пробел - продолжить | ESC - выйти</div>
+            </div>
+        </div>
+
+        <!-- Экран выбора -->
+        <div id="choice-screen" class="screen">
+            <video id="choice-video" preload="auto" playsinline>
+                Ваш браузер не поддерживает видео.
+            </video>
+            <div id="choice-buttons">
+                <button class="choice-btn" data-choice="woman">Бывшая</button>
+                <button class="choice-btn" data-choice="president">Президент</button>
+                <button class="choice-btn" data-choice="friend">Предавший друг</button>
+                <button class="choice-btn" data-choice="child">Ребенок</button>
+            </div>
+            <div class="controls-hint">
+                <div class="hint-text">ESC - выйти</div>
+            </div>
+        </div>
+
+        <!-- Финальная картинка -->
+        <div id="end-screen" class="screen">
+            <img id="end-image" src="end.jpg" alt="End">
+            <div class="controls-hint">
+                <div class="hint-text">ESC - выйти</div>
+            </div>
+        </div>
+
+        <!-- Кнопка выхода -->
+        <button id="exit-btn" class="exit-button" title="Выйти (ESC)">✕</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
