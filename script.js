@@ -115,9 +115,25 @@ function nextScene() {
         };
         
         // Воспроизведение со звуком
-        gameVideo.play().catch(e => {
-            console.log('Автовоспроизведение заблокировано:', e);
-        });
+        // На мобильных устройствах может потребоваться muted для автовоспроизведения
+        const playPromise = gameVideo.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(e => {
+                console.log('Автовоспроизведение заблокировано, пробуем с muted:', e);
+                // Если автовоспроизведение заблокировано, пробуем с muted
+                gameVideo.muted = true;
+                gameVideo.play().then(() => {
+                    // Включаем звук после первого взаимодействия
+                    const enableSound = () => {
+                        gameVideo.muted = false;
+                    };
+                    document.addEventListener('click', enableSound, { once: true });
+                    document.addEventListener('touchstart', enableSound, { once: true });
+                }).catch(err => {
+                    console.log('Не удалось воспроизвести видео:', err);
+                });
+            });
+        }
         showControlsHint();
     } else if (scene.type === 'choice') {
         showScreen('choice');
@@ -127,9 +143,25 @@ function nextScene() {
         choiceVideo.src = scene.src;
         choiceVideo.load();
         // Воспроизведение со звуком
-        choiceVideo.play().catch(e => {
-            console.log('Автовоспроизведение заблокировано:', e);
-        });
+        // На мобильных устройствах может потребоваться muted для автовоспроизведения
+        const playPromise = choiceVideo.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(e => {
+                console.log('Автовоспроизведение заблокировано, пробуем с muted:', e);
+                // Если автовоспроизведение заблокировано, пробуем с muted
+                choiceVideo.muted = true;
+                choiceVideo.play().then(() => {
+                    // Включаем звук после первого взаимодействия
+                    const enableSound = () => {
+                        choiceVideo.muted = false;
+                    };
+                    document.addEventListener('click', enableSound, { once: true });
+                    document.addEventListener('touchstart', enableSound, { once: true });
+                }).catch(err => {
+                    console.log('Не удалось воспроизвести видео:', err);
+                });
+            });
+        }
         showControlsHint();
     }
 }
@@ -159,17 +191,48 @@ function handleChoice(choice) {
     };
     
     // Воспроизведение со звуком
-    gameVideo.play().catch(e => {
-        console.log('Автовоспроизведение заблокировано:', e);
-    });
+    // На мобильных устройствах может потребоваться muted для автовоспроизведения
+    const playPromise = gameVideo.play();
+    if (playPromise !== undefined) {
+        playPromise.catch(e => {
+            console.log('Автовоспроизведение заблокировано, пробуем с muted:', e);
+            // Если автовоспроизведение заблокировано, пробуем с muted
+            gameVideo.muted = true;
+            gameVideo.play().then(() => {
+                // Включаем звук после первого взаимодействия
+                const enableSound = () => {
+                    gameVideo.muted = false;
+                };
+                document.addEventListener('click', enableSound, { once: true });
+                document.addEventListener('touchstart', enableSound, { once: true });
+            }).catch(err => {
+                console.log('Не удалось воспроизвести видео:', err);
+            });
+        });
+    }
     showControlsHint();
 }
 
 // Инициализация кнопок выбора
 document.querySelectorAll('.choice-btn').forEach(btn => {
+    // Обработка клика (для десктопа)
     btn.addEventListener('click', (e) => {
-        const choice = e.target.dataset.choice;
-        handleChoice(choice);
+        e.preventDefault();
+        e.stopPropagation();
+        const choice = e.target.dataset.choice || e.currentTarget.dataset.choice;
+        if (choice) {
+            handleChoice(choice);
+        }
+    });
+    
+    // Обработка touch событий (для мобильных устройств)
+    btn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const choice = e.target.dataset.choice || e.currentTarget.dataset.choice;
+        if (choice) {
+            handleChoice(choice);
+        }
     });
 });
 
