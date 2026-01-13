@@ -221,7 +221,8 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-document.addEventListener('click', (e) => {
+// Обработка клика и касания (для мобильных устройств)
+function handleClickOrTouch(e) {
     // Не продолжаем при клике на кнопки выбора или кнопку выхода
     if (e.target.closest('.choice-btn') || e.target.closest('.exit-button')) {
         return;
@@ -232,6 +233,13 @@ document.addEventListener('click', (e) => {
     if (activeScreen && activeScreen.id !== 'choice-screen') {
         handleContinue();
     }
+}
+
+document.addEventListener('click', handleClickOrTouch);
+// Поддержка touch событий для мобильных устройств
+document.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    handleClickOrTouch(e);
 });
 
 exitButton.addEventListener('click', handleExit);

@@ -10,6 +10,11 @@ body {
     background-color: #000;
     width: 100vw;
     height: 100vh;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+    touch-action: manipulation;
+    position: fixed;
 }
 
 #game-container {
@@ -53,6 +58,9 @@ video {
     width: auto;
     height: auto;
     object-fit: contain;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
 }
 
 /* Подсказка об управлении */
