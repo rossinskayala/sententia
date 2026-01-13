@@ -115,21 +115,20 @@ function nextScene() {
         };
         
         // Воспроизведение со звуком
-        gameVideo.muted = false; // Убеждаемся, что звук включен
         gameVideo.play().catch(e => {
             console.log('Автовоспроизведение заблокировано:', e);
-            // Если автовоспроизведение заблокировано, пользователь может нажать play вручную
         });
         showControlsHint();
     } else if (scene.type === 'choice') {
         showScreen('choice');
+        // Показать кнопки выбора (на случай повторного прохождения)
+        choiceButtons.style.display = 'flex';
+        gameState.selectedChoice = null; // Сбросить выбор
         choiceVideo.src = scene.src;
         choiceVideo.load();
         // Воспроизведение со звуком
-        choiceVideo.muted = false; // Убеждаемся, что звук включен
         choiceVideo.play().catch(e => {
             console.log('Автовоспроизведение заблокировано:', e);
-            // Если автовоспроизведение заблокировано, пользователь может нажать play вручную
         });
         showControlsHint();
     }
@@ -160,10 +159,8 @@ function handleChoice(choice) {
     };
     
     // Воспроизведение со звуком
-    gameVideo.muted = false; // Убеждаемся, что звук включен
     gameVideo.play().catch(e => {
         console.log('Автовоспроизведение заблокировано:', e);
-        // Если автовоспроизведение заблокировано, пользователь может нажать play вручную
     });
     showControlsHint();
 }
@@ -233,8 +230,7 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Обработка клика и касания (для мобильных устройств)
-function handleClickOrTouch(e) {
+document.addEventListener('click', (e) => {
     // Не продолжаем при клике на кнопки выбора или кнопку выхода
     if (e.target.closest('.choice-btn') || e.target.closest('.exit-button')) {
         return;
@@ -245,13 +241,6 @@ function handleClickOrTouch(e) {
     if (activeScreen && activeScreen.id !== 'choice-screen') {
         handleContinue();
     }
-}
-
-document.addEventListener('click', handleClickOrTouch);
-// Поддержка touch событий для мобильных устройств
-document.addEventListener('touchend', (e) => {
-    e.preventDefault();
-    handleClickOrTouch(e);
 });
 
 exitButton.addEventListener('click', handleExit);
